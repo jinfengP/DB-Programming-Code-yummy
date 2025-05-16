@@ -22,12 +22,15 @@ def askInput():
 
 def teacherSignIn(id,c): #WORK IN PROGRESS
     cursor = c.cursor()
+    query = 'call teacher_boowomp('+id+');'
+    cursor.execute(query)
+    printTeacherSchedule(cursor)
     cursor.close()
     c.close()
 
 def studentSignIn(id,c):
     cursor = c.cursor()
-    query = 'call boowomp('+id+')'
+    query = 'call boowomp('+id+');'
     cursor.execute(query)
     printStudentSchedule(cursor)
     cursor.close()
@@ -35,11 +38,19 @@ def studentSignIn(id,c):
 
 
 def printStudentSchedule(list):
+    print("")
     for row in list:
         print("Period: " + str(row[3]))
         print("Course: " + str(row[1]))
         print("Room:" + str(row[2]))
         print("Teacher: " + str(row[4])+ " " + str(row[5]) + "\n")
 
+def printTeacherSchedule(list):
+    print("")
+    for row in list:
+        print("Period: " + str(row[2]))
+        print("Offering ID: " + str(row[0]))
+        print("Course: " + str(row[3]))
+        print("Room: " + str(row[5]) + "\n")
 
 askInput()
