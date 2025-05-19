@@ -14,25 +14,49 @@ def askInput():
     role = input("Login as Teacher [1] or Login as Student [2]: ")
     if int(role)==1:
         tid = input("Enter your Teacher ID: ")
-        teacherSignIn(tid,connection)
+        action = input("See Schedule [1] or Select Class [2]: ")
+        teacherSignIn(tid,connection,action)
     elif int(role)==2:
         sid = input("Enter your Student ID: ")
-        studentSignIn(sid,connection)
+        action = input("See Schedule [1] or Select Class [2] or View Overall [3]: ")
+        studentSignIn(sid,connection,action)
+    else:
+        print("Invalid Option!")
 
 
-def teacherSignIn(id,c): #WORK IN PROGRESS
+def teacherSignIn(id,c,act):
+    act=int(act)
     cursor = c.cursor()
-    query = 'call teacher_boowomp('+id+');'
-    cursor.execute(query)
-    printTeacherSchedule(cursor)
+    if act==1:
+        query = 'call teacher_boowomp('+id+');'
+        cursor.execute(query)
+        printTeacherSchedule(cursor)
+    elif act==2:
+        print('WIP')
+    else:
+        print("Invalid Option!")
     cursor.close()
     c.close()
 
-def studentSignIn(id,c):
+def studentSignIn(id,c,act):
+    act=int(act)
     cursor = c.cursor()
-    query = 'call boowomp('+id+');'
-    cursor.execute(query)
-    printStudentSchedule(cursor)
+    if act==1:
+        query = 'call boowomp('+id+');'
+        cursor.execute(query)
+        printStudentSchedule(cursor)
+    elif act==2:
+        query = 'call boowomp('+id+');'
+        cursor.execute(query)     
+        i=1
+        for row in cursor:
+            print("Period " + str(row[3]) + " - " + str(row[1]) + " - " + str(row[2]) + " [" + str(i) + "]")
+            i+=1
+        input("Which class do you want to view?: ")
+    elif act==3:
+        print('WIP')
+    else:
+        print("Invalid Option!")
     cursor.close()
     c.close()
 
